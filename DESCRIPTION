@@ -1,0 +1,12 @@
+Package: tennisratingscpp
+Type: Package
+Title: Calculates Tennis Ratings Using C++
+Version: 1.0
+Date: 2017-11-07
+Author: Martin Ingram
+Maintainer: Martin Ingram  <martin.ingram@gmail.com>
+Description: Provides a series of functions to quickly calculate ratings for
+  tennis, such as an Elo rating for serve and return.
+License: GPL (>= 2)
+Imports: Rcpp (>= 0.12.13)
+LinkingTo: Rcpp
