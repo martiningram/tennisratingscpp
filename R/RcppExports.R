@@ -5,8 +5,8 @@ ServeReturnEloStaticK <- function(server_names, returner_names, server_won, k, r
     .Call('_tennisratingscpp_ServeReturnEloStaticK', PACKAGE = 'tennisratingscpp', server_names, returner_names, server_won, k, return_starting_elo)
 }
 
-ServeReturnGlicko <- function(server, returner, server_won, match_number, match_to_match_variance, initial_variance, initial_return_rating = 1410.) {
-    .Call('_tennisratingscpp_ServeReturnGlicko', PACKAGE = 'tennisratingscpp', server, returner, server_won, match_number, match_to_match_variance, initial_variance, initial_return_rating)
+ServeReturnGlicko <- function(server, returner, server_won, match_number, match_to_match_variance, initial_variance, initial_return_rating = 1410., backward_pass = FALSE) {
+    .Call('_tennisratingscpp_ServeReturnGlicko', PACKAGE = 'tennisratingscpp', server, returner, server_won, match_number, match_to_match_variance, initial_variance, initial_return_rating, backward_pass)
 }
 
 CalculateGlickoWinExpectation <- function(mu, sigma_sq, mu_j, sigma_sq_j) {

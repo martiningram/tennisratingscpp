@@ -32,7 +32,8 @@ namespace Glicko {
       std::vector<int> match_number,
       double match_to_match_variance,
       double initial_variance,
-      double initial_return_rating=1410.);
+      double initial_return_rating=1410.,
+      bool backward_pass=false);
 
   void AddVariance(std::map<std::string, double>& sigma_map,
       double variance_to_add, std::vector<std::string>& players);
@@ -40,6 +41,16 @@ namespace Glicko {
   std::pair<double, double> CalculateSingleMatchUpdates(
       double mu, double sigma_sq, double mu_j, double sigma_sq_j,
       int outcome);
+
+  std::pair<double, double> CalculateSmoothedParameters(
+      double mu_tm1, double sigma_sq_tm1, double mu_t, double sigma_sq_t,
+      double nu_sq);
+
+  void ServeReturnGlickoBackwardPass(
+      const std::vector<std::string>& server,
+      const std::vector<std::string>& returner,
+      std::map<std::string, std::vector<double>>& ratings_history,
+      const std::vector<double>& added_variances);
 
 }
 

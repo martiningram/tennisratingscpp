@@ -21,8 +21,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // ServeReturnGlicko
-std::map<std::string, std::vector<double>> ServeReturnGlicko(std::vector<std::string> server, std::vector<std::string> returner, std::vector<bool> server_won, std::vector<int> match_number, double match_to_match_variance, double initial_variance, double initial_return_rating);
-RcppExport SEXP _tennisratingscpp_ServeReturnGlicko(SEXP serverSEXP, SEXP returnerSEXP, SEXP server_wonSEXP, SEXP match_numberSEXP, SEXP match_to_match_varianceSEXP, SEXP initial_varianceSEXP, SEXP initial_return_ratingSEXP) {
+std::map<std::string, std::vector<double>> ServeReturnGlicko(std::vector<std::string> server, std::vector<std::string> returner, std::vector<bool> server_won, std::vector<int> match_number, double match_to_match_variance, double initial_variance, double initial_return_rating, bool backward_pass);
+RcppExport SEXP _tennisratingscpp_ServeReturnGlicko(SEXP serverSEXP, SEXP returnerSEXP, SEXP server_wonSEXP, SEXP match_numberSEXP, SEXP match_to_match_varianceSEXP, SEXP initial_varianceSEXP, SEXP initial_return_ratingSEXP, SEXP backward_passSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -33,7 +33,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type match_to_match_variance(match_to_match_varianceSEXP);
     Rcpp::traits::input_parameter< double >::type initial_variance(initial_varianceSEXP);
     Rcpp::traits::input_parameter< double >::type initial_return_rating(initial_return_ratingSEXP);
-    rcpp_result_gen = Rcpp::wrap(ServeReturnGlicko(server, returner, server_won, match_number, match_to_match_variance, initial_variance, initial_return_rating));
+    Rcpp::traits::input_parameter< bool >::type backward_pass(backward_passSEXP);
+    rcpp_result_gen = Rcpp::wrap(ServeReturnGlicko(server, returner, server_won, match_number, match_to_match_variance, initial_variance, initial_return_rating, backward_pass));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -54,7 +55,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_tennisratingscpp_ServeReturnEloStaticK", (DL_FUNC) &_tennisratingscpp_ServeReturnEloStaticK, 5},
-    {"_tennisratingscpp_ServeReturnGlicko", (DL_FUNC) &_tennisratingscpp_ServeReturnGlicko, 7},
+    {"_tennisratingscpp_ServeReturnGlicko", (DL_FUNC) &_tennisratingscpp_ServeReturnGlicko, 8},
     {"_tennisratingscpp_CalculateGlickoWinExpectation", (DL_FUNC) &_tennisratingscpp_CalculateGlickoWinExpectation, 4},
     {NULL, NULL, 0}
 };

@@ -26,11 +26,12 @@ std::map<std::string, std::vector<double>> ServeReturnGlicko(
     std::vector<int> match_number,
     double match_to_match_variance,
     double initial_variance,
-    double initial_return_rating=1410.) {
+    double initial_return_rating=1410.,
+    bool backward_pass=false) {
 
   return Glicko::CalculateServeReturnGlicko(server, returner, server_won,
       match_number, match_to_match_variance, initial_variance,
-      initial_return_rating);
+      initial_return_rating, backward_pass);
 
 }
 

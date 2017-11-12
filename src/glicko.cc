@@ -90,7 +90,8 @@ std::map<std::string, std::vector<double>> Glicko::CalculateServeReturnGlicko(
       std::vector<int> match_number,
       double match_to_match_variance,
       double initial_variance,
-      double initial_return_rating) {
+      double initial_return_rating,
+      bool backward_pass) {
 
   // This is getting a little messy. It might be nice to have a class or struct
   // which handles these.
@@ -105,6 +106,7 @@ std::map<std::string, std::vector<double>> Glicko::CalculateServeReturnGlicko(
 
   std::string cur_server;
   std::string cur_returner;
+  std::vector<double> added_variances(server.size(), 0.);
 
   for (int i = 0; i < server.size(); i++) {
 
@@ -119,6 +121,8 @@ std::map<std::string, std::vector<double>> Glicko::CalculateServeReturnGlicko(
           players);
       Glicko::AddVariance(last_return_sigma_sq, match_to_match_variance,
           players);
+
+      added_variances[i - 1] += match_to_match_variance;
 
     }
 
@@ -168,6 +172,14 @@ std::map<std::string, std::vector<double>> Glicko::CalculateServeReturnGlicko(
 
   }
 
+  if (backward_pass) {
+
+    // Update the ratings history
+    Glicko::ServeReturnGlickoBackwardPass(server, returner, ratings_history,
+        added_variances);
+
+  }
+
   return ratings_history;
 
 }
@@ -179,3 +191,88 @@ double Glicko::CalculateWinExp(double mu, double sigma_sq, double mu_j,
   return 1. / (1. + pow(10., -cur_g * (mu - mu_j) / 400.));
 
 }
+
+std::pair<double, double> Glicko::CalculateSmoothedParameters(
+      double mu_tm1, double sigma_sq_tm1, double mu_t, double sigma_sq_t,
+      double nu_sq) {
+
+  double v = pow(1./(sigma_sq_tm1) + 1./(nu_sq + sigma_sq_t), -1.);
+  double m = v * (mu_tm1 / sigma_sq_tm1 + mu_t / (nu_sq + sigma_sq_t));
+
+  return std::make_pair(m, v);
+
+}
+
+void Glicko::ServeReturnGlickoBackwardPass(
+      const std::vector<std::string>& server,
+      const std::vector<std::string>& returner,
+      std::map<std::string, std::vector<double>>& ratings_history,
+      const std::vector<double>& added_variances) {
+
+  std::map<std::string, double> serve_mu_t;
+  std::map<std::string, double> serve_sigma_sq_t;
+  std::map<std::string, double> return_mu_t;
+  std::map<std::string, double> return_sigma_sq_t;
+
+  std::string cur_server;
+  std::string cur_returner;
+
+  for (int i = server.size() - 1; i >= 0; i--) {
+
+    cur_server = server[i];
+    cur_returner = returner[i];
+
+    if (serve_mu_t.find(cur_server) == serve_mu_t.end()) {
+
+      // This is the first time we have seen this server.
+      serve_mu_t[cur_server] = ratings_history["serve_mu"][i];
+      serve_sigma_sq_t[cur_server] = ratings_history["serve_sigma_sq"][i];
+
+    }
+
+    else {
+
+      // Update the server
+      double cur_nu_sq = added_variances[i];
+      double mu_t = serve_mu_t[cur_server];
+      double sigma_sq_t = serve_sigma_sq_t[cur_server];
+      double mu_tm1 = ratings_history["serve_mu"][i];
+      double sigma_sq_tm1 = ratings_history["serve_sigma_sq"][i];
+
+      // Make the update
+      std::tie(ratings_history["serve_mu"][i],
+               ratings_history["serve_sigma_sq"][i]) =
+        Glicko::CalculateSmoothedParameters(
+            mu_tm1, sigma_sq_tm1, mu_t, sigma_sq_t, cur_nu_sq);
+
+    }
+
+    if (return_mu_t.find(cur_returner) == return_mu_t.end()) {
+
+      // The first time we have seen this returner.
+      return_mu_t[cur_returner] = ratings_history["return_mu"][i];
+      return_sigma_sq_t[cur_returner] = ratings_history["return_sigma_sq"][i];
+
+    }
+
+    else {
+
+      // Update the returner
+      double cur_nu_sq = added_variances[i];
+      double mu_t = return_mu_t[cur_returner];
+      double sigma_sq_t = return_sigma_sq_t[cur_returner];
+      double mu_tm1 = ratings_history["return_mu"][i];
+      double sigma_sq_tm1 = ratings_history["return_sigma_sq"][i];
+
+      // Make the update
+      std::tie(ratings_history["return_mu"][i],
+               ratings_history["return_sigma_sq"][i]) =
+        Glicko::CalculateSmoothedParameters(
+            mu_tm1, sigma_sq_tm1, mu_t, sigma_sq_t, cur_nu_sq);
+
+    }
+
+  }
+
+}
+
