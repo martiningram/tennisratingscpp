@@ -20,9 +20,42 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// ServeReturnGlicko
+std::map<std::string, std::vector<double>> ServeReturnGlicko(std::vector<std::string> server, std::vector<std::string> returner, std::vector<bool> server_won, std::vector<int> match_number, double match_to_match_variance, double initial_variance, double initial_return_rating);
+RcppExport SEXP _tennisratingscpp_ServeReturnGlicko(SEXP serverSEXP, SEXP returnerSEXP, SEXP server_wonSEXP, SEXP match_numberSEXP, SEXP match_to_match_varianceSEXP, SEXP initial_varianceSEXP, SEXP initial_return_ratingSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type server(serverSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type returner(returnerSEXP);
+    Rcpp::traits::input_parameter< std::vector<bool> >::type server_won(server_wonSEXP);
+    Rcpp::traits::input_parameter< std::vector<int> >::type match_number(match_numberSEXP);
+    Rcpp::traits::input_parameter< double >::type match_to_match_variance(match_to_match_varianceSEXP);
+    Rcpp::traits::input_parameter< double >::type initial_variance(initial_varianceSEXP);
+    Rcpp::traits::input_parameter< double >::type initial_return_rating(initial_return_ratingSEXP);
+    rcpp_result_gen = Rcpp::wrap(ServeReturnGlicko(server, returner, server_won, match_number, match_to_match_variance, initial_variance, initial_return_rating));
+    return rcpp_result_gen;
+END_RCPP
+}
+// CalculateGlickoWinExpectation
+std::vector<double> CalculateGlickoWinExpectation(std::vector<double> mu, std::vector<double> sigma_sq, std::vector<double> mu_j, std::vector<double> sigma_sq_j);
+RcppExport SEXP _tennisratingscpp_CalculateGlickoWinExpectation(SEXP muSEXP, SEXP sigma_sqSEXP, SEXP mu_jSEXP, SEXP sigma_sq_jSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<double> >::type mu(muSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type sigma_sq(sigma_sqSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type mu_j(mu_jSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type sigma_sq_j(sigma_sq_jSEXP);
+    rcpp_result_gen = Rcpp::wrap(CalculateGlickoWinExpectation(mu, sigma_sq, mu_j, sigma_sq_j));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_tennisratingscpp_ServeReturnEloStaticK", (DL_FUNC) &_tennisratingscpp_ServeReturnEloStaticK, 5},
+    {"_tennisratingscpp_ServeReturnGlicko", (DL_FUNC) &_tennisratingscpp_ServeReturnGlicko, 7},
+    {"_tennisratingscpp_CalculateGlickoWinExpectation", (DL_FUNC) &_tennisratingscpp_CalculateGlickoWinExpectation, 4},
     {NULL, NULL, 0}
 };
 

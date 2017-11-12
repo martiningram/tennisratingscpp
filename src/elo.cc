@@ -1,24 +1,11 @@
 #include "elo.h"
+#include "tools.h"
 #include <cmath>
 
 double Elo::WinProbabilityP1(double elo_p1, double elo_p2){
 
   return 1. / (1. + std::pow(10., ((elo_p2 - elo_p1)/400.)));
 
-}
-
-double Elo::LookPlayerUp(const std::string &player_name,
-    const std::map<std::string, double> &ratings,
-    double default_value) {
-
-  auto it = ratings.find(player_name);
-
-  if (it != ratings.end()) {
-    return it->second;
-  }
-  else {
-    return default_value;
-  }
 }
 
 double Elo::MakeUpdate(double old_elo, int outcome, double k,
@@ -38,8 +25,8 @@ std::map<std::string, std::vector<double>> Elo::CalculateStaticKElo(
 
   for (int i = 0; i < winner_names.size(); i++) {
 
-    double winner_elo = Elo::LookPlayerUp(winner_names[i], last_elo_values);
-    double loser_elo = Elo::LookPlayerUp(loser_names[i], last_elo_values);
+    double winner_elo = Tools::LookPlayerUp(winner_names[i], last_elo_values);
+    double loser_elo = Tools::LookPlayerUp(loser_names[i], last_elo_values);
 
     elos_over_time[std::string("winner_elo")].emplace_back(winner_elo);
     elos_over_time[std::string("loser_elo")].emplace_back(loser_elo);
@@ -74,8 +61,8 @@ std::map<std::string, std::vector<double>> Elo::CalculateServeReturnEloStaticK(
     std::string &cur_server = server_names[i];
     std::string &cur_returner = returner_names[i];
 
-    double server_elo = Elo::LookPlayerUp(cur_server, last_serve_elos);
-    double returner_elo = Elo::LookPlayerUp(cur_returner, last_return_elos,
+    double server_elo = Tools::LookPlayerUp(cur_server, last_serve_elos);
+    double returner_elo = Tools::LookPlayerUp(cur_returner, last_return_elos,
         return_starting_elo);
 
     elos_over_time["server_elos"].emplace_back(server_elo);

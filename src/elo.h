@@ -21,10 +21,6 @@ namespace Elo{
 
   double WinProbabilityP1(double elo_p1, double elo_p2);
 
-  double LookPlayerUp(const std::string &player_name,
-      const std::map<std::string, double> &ratings,
-      double default_value = 1500.);
-
   double MakeUpdate(double old_elo, int outcome, double k,
       double win_expectation);
 
