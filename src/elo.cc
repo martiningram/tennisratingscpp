@@ -16,9 +16,18 @@ double Elo::MakeUpdate(double old_elo, int outcome, double k,
 
 }
 
-std::map<std::string, std::vector<double>> Elo::CalculateStaticKElo(
+double Elo::MakeUpdateMatch(double old_elo, int outcome, double k,  double slam, double win_expectation) {
+    
+    double update = 250./(std::pow((k + 5.), 0.4)) * slam * (outcome - win_expectation);
+    return old_elo + update;
+    
+}
+
+std::map<std::string, std::vector<double>> Elo::CalculateElo(
       std::vector<std::string> winner_names,
-      std::vector<std::string> loser_names, double k) {
+      std::vector<std::string> loser_names,
+      std::vector<double> winner_match,
+      std::vector<double> loser_match, std::vector<double> slam_factor) {
 
   std::map<std::string, std::vector<double>> elos_over_time;
   std::map<std::string, double> last_elo_values;
@@ -28,18 +37,20 @@ std::map<std::string, std::vector<double>> Elo::CalculateStaticKElo(
     double winner_elo = Tools::LookPlayerUp(winner_names[i], last_elo_values);
     double loser_elo = Tools::LookPlayerUp(loser_names[i], last_elo_values);
 
-    elos_over_time[std::string("winner_elo")].emplace_back(winner_elo);
-    elos_over_time[std::string("loser_elo")].emplace_back(loser_elo);
-
     double winner_prob = Elo::WinProbabilityP1(winner_elo, loser_elo);
 
-    last_elo_values[winner_names[i]] = Elo::MakeUpdate(
-        winner_elo, 1, k, winner_prob);
+    last_elo_values[winner_names[i]] = Elo::MakeUpdateMatch(
+        winner_elo, 1, winner_match[i], slam_factor[i], winner_prob);
 
-    last_elo_values[loser_names[i]] = Elo::MakeUpdate(
-        loser_elo, 0, k, 1 - winner_prob);
+    last_elo_values[loser_names[i]] = Elo::MakeUpdateMatch(
+        loser_elo, 0, loser_match[i], slam_factor[i], 1 - winner_prob);
+      
+    elos_over_time[std::string("winner_elo")].emplace_back(last_elo_values[winner_names[i]]);
+    elos_over_time[std::string("loser_elo")].emplace_back(last_elo_values[loser_names[i]]);
 
   }
+    
+    
 
   return elos_over_time;
 

@@ -7,10 +7,11 @@
 
 namespace Elo{
 
-  std::map<std::string, std::vector<double>> CalculateStaticKElo(
+  std::map<std::string, std::vector<double>> CalculateElo(
             std::vector<std::string> winner_names,
             std::vector<std::string> loser_names,
-            double k);
+            std::vector<double> winner_match,
+            std::vector<double> loser_match, std::vector<double> slam_factor);
 
   std::map<std::string, std::vector<double>> CalculateServeReturnEloStaticK(
             std::vector<std::string> server_names,
@@ -23,6 +24,9 @@ namespace Elo{
 
   double MakeUpdate(double old_elo, int outcome, double k,
       double win_expectation);
+
+ double MakeUpdateMatch(double old_elo, int outcome, double k, double slam,
+                      double win_expectation);
 
 }
 
