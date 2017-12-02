@@ -6,15 +6,15 @@
 using namespace Rcpp;
 
 // CalculateElo
-std::map<std::string, std::vector<double>> CalculateElo(std::vector<std::string> winner_names, std::vector<std::string> loser_names, std::vector<double> winner_match, std::vector<double> loser_match, std::vector<double> slam_factor);
+std::map<std::string, std::vector<double>> CalculateElo(std::vector<std::string> winner_names, std::vector<std::string> loser_names, std::vector<int> winner_match, std::vector<int> loser_match, std::vector<double> slam_factor);
 RcppExport SEXP _tennisratingscpp_CalculateElo(SEXP winner_namesSEXP, SEXP loser_namesSEXP, SEXP winner_matchSEXP, SEXP loser_matchSEXP, SEXP slam_factorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::vector<std::string> >::type winner_names(winner_namesSEXP);
     Rcpp::traits::input_parameter< std::vector<std::string> >::type loser_names(loser_namesSEXP);
-    Rcpp::traits::input_parameter< std::vector<double> >::type winner_match(winner_matchSEXP);
-    Rcpp::traits::input_parameter< std::vector<double> >::type loser_match(loser_matchSEXP);
+    Rcpp::traits::input_parameter< std::vector<int> >::type winner_match(winner_matchSEXP);
+    Rcpp::traits::input_parameter< std::vector<int> >::type loser_match(loser_matchSEXP);
     Rcpp::traits::input_parameter< std::vector<double> >::type slam_factor(slam_factorSEXP);
     rcpp_result_gen = Rcpp::wrap(CalculateElo(winner_names, loser_names, winner_match, loser_match, slam_factor));
     return rcpp_result_gen;

@@ -6,14 +6,14 @@ using namespace Rcpp;
 // [[Rcpp::plugins(cpp11)]]
 
 // [[Rcpp::export]]
-std::map<std::string, std::vector<double>> CalculateElo(std::vector<std::string> winner_names,
-                                                                 std::vector<std::string> loser_names,
-                                                               std::vector<double> winner_match,
-                                                               std::vector<double> loser_match,
-                                                               std::vector<double> slam_factor) {
-    
-    return Elo::CalculateElo(winner_names, loser_names, winner_match, loser_match, slam_factor);
-    
+std::map<std::string, std::vector<double>> CalculateElo(
+    std::vector<std::string> winner_names, std::vector<std::string> loser_names,
+    std::vector<int> winner_match, std::vector<int> loser_match,
+    std::vector<double> slam_factor) {
+
+    return Elo::CalculateElo(winner_names, loser_names, winner_match,
+        loser_match, slam_factor);
+
 }
 
 // [[Rcpp::export]]
