@@ -5,6 +5,23 @@
 
 using namespace Rcpp;
 
+// CalculateEloWithStartingValues
+std::map<std::string, std::vector<double>> CalculateEloWithStartingValues(std::vector<std::string> winner_names, std::vector<std::string> loser_names, std::vector<int> winner_match, std::vector<int> loser_match, std::vector<double> slam_factor, std::vector<std::string> known_elo_names, std::vector<double> known_elo_values);
+RcppExport SEXP _tennisratingscpp_CalculateEloWithStartingValues(SEXP winner_namesSEXP, SEXP loser_namesSEXP, SEXP winner_matchSEXP, SEXP loser_matchSEXP, SEXP slam_factorSEXP, SEXP known_elo_namesSEXP, SEXP known_elo_valuesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type winner_names(winner_namesSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type loser_names(loser_namesSEXP);
+    Rcpp::traits::input_parameter< std::vector<int> >::type winner_match(winner_matchSEXP);
+    Rcpp::traits::input_parameter< std::vector<int> >::type loser_match(loser_matchSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type slam_factor(slam_factorSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type known_elo_names(known_elo_namesSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type known_elo_values(known_elo_valuesSEXP);
+    rcpp_result_gen = Rcpp::wrap(CalculateEloWithStartingValues(winner_names, loser_names, winner_match, loser_match, slam_factor, known_elo_names, known_elo_values));
+    return rcpp_result_gen;
+END_RCPP
+}
 // CalculateElo
 std::map<std::string, std::vector<double>> CalculateElo(std::vector<std::string> winner_names, std::vector<std::string> loser_names, std::vector<int> winner_match, std::vector<int> loser_match, std::vector<double> slam_factor);
 RcppExport SEXP _tennisratingscpp_CalculateElo(SEXP winner_namesSEXP, SEXP loser_namesSEXP, SEXP winner_matchSEXP, SEXP loser_matchSEXP, SEXP slam_factorSEXP) {
@@ -69,6 +86,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_tennisratingscpp_CalculateEloWithStartingValues", (DL_FUNC) &_tennisratingscpp_CalculateEloWithStartingValues, 7},
     {"_tennisratingscpp_CalculateElo", (DL_FUNC) &_tennisratingscpp_CalculateElo, 5},
     {"_tennisratingscpp_ServeReturnEloStaticK", (DL_FUNC) &_tennisratingscpp_ServeReturnEloStaticK, 5},
     {"_tennisratingscpp_ServeReturnGlicko", (DL_FUNC) &_tennisratingscpp_ServeReturnGlicko, 8},

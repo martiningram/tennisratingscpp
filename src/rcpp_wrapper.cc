@@ -6,14 +6,35 @@ using namespace Rcpp;
 // [[Rcpp::plugins(cpp11)]]
 
 // [[Rcpp::export]]
-std::map<std::string, std::vector<double>> CalculateElo(
-    std::vector<std::string> winner_names, std::vector<std::string> loser_names,
-    std::vector<int> winner_match, std::vector<int> loser_match,
-    std::vector<double> slam_factor) {
+std::map<std::string, std::vector<double>> CalculateEloWithStartingValues(
+    std::vector<std::string> winner_names,
+    std::vector<std::string> loser_names,
+    std::vector<int> winner_match,
+    std::vector<int> loser_match,
+    std::vector<double> slam_factor,
+    std::vector<std::string> known_elo_names,
+    std::vector<double> known_elo_values) {
+
+    std::map<std::string, double> last_elo_values;
+
+    for (int i = 0; i < known_elo_names.size(); i++) {
+      last_elo_values[known_elo_names[i]] = known_elo_values[i];
+    }
 
     return Elo::CalculateElo(winner_names, loser_names, winner_match,
-        loser_match, slam_factor);
+        loser_match, slam_factor, last_elo_values);
 
+}
+
+// [[Rcpp::export]]
+std::map<std::string, std::vector<double>> CalculateElo(
+    std::vector<std::string> winner_names,
+    std::vector<std::string> loser_names,
+    std::vector<int> winner_match,
+    std::vector<int> loser_match,
+    std::vector<double> slam_factor) {
+    return Elo::CalculateElo(winner_names, loser_names, winner_match,
+        loser_match, slam_factor);
 }
 
 // [[Rcpp::export]]

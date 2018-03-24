@@ -11,7 +11,10 @@ namespace Elo{
             std::vector<std::string> winner_names,
             std::vector<std::string> loser_names,
             std::vector<int> winner_match,
-            std::vector<int> loser_match, std::vector<double> slam_factor);
+            std::vector<int> loser_match,
+            std::vector<double> slam_factor,
+            std::map<std::string, double> last_elo_values =
+            std::map<std::string, double>());
 
   std::map<std::string, std::vector<double>> CalculateServeReturnEloStaticK(
             std::vector<std::string> server_names,

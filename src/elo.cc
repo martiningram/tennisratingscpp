@@ -32,10 +32,11 @@ std::map<std::string, std::vector<double>> Elo::CalculateElo(
       std::vector<std::string> winner_names,
       std::vector<std::string> loser_names,
       std::vector<int> winner_match,
-      std::vector<int> loser_match, std::vector<double> slam_factor) {
+      std::vector<int> loser_match,
+      std::vector<double> slam_factor,
+      std::map<std::string, double> last_elo_values) {
 
   std::map<std::string, std::vector<double>> elos_over_time;
-  std::map<std::string, double> last_elo_values;
 
   for (int i = 0; i < winner_names.size(); i++) {
 
